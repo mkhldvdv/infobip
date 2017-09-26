@@ -1,9 +1,7 @@
 package com.infobip.interview.web;
 
 import com.infobip.interview.models.RequestWrapper;
-import com.infobip.interview.models.ResponseWrapper;
 import com.infobip.interview.models.Shorthand;
-import com.infobip.interview.models.User;
 import com.infobip.interview.services.ShorthandService;
 import com.infobip.interview.utils.Utils;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
