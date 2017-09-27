@@ -1,5 +1,6 @@
 package com.infobip.interview.web;
 
+import com.infobip.interview.models.HelpResponse;
 import com.infobip.interview.models.RequestWrapper;
 import com.infobip.interview.models.Shorthand;
 import com.infobip.interview.services.ShorthandService;
@@ -37,7 +38,7 @@ public class ShorthandController {
         this.service = service;
     }
 
-    @RequestMapping(value = "/username", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/account", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity username(@RequestBody RequestWrapper request) {
         // check input
         if (!(request.getUsername() != null && Utils.isValidString(request.getUsername()))) {
@@ -117,7 +118,29 @@ public class ShorthandController {
 
     @RequestMapping(value = "/help", method = RequestMethod.GET)
     public ResponseEntity help() {
-        return ResponseEntity.ok("help");
+        String installation = "prerequisites:\n" +
+                "installed Java 8 and maven\n" +
+                "1. download project with the link https://github.com/mkhldvdv/infobip/archive/master.zip and unzip \n" +
+                "2. step into the unzipped directory and in the command line execute: clean package -Dmaven.test.skip=true";
+        String launching = "step into the directory with the jar file and execute in the command line:\n" +
+                "java -jar interview-0.0.1-SNAPSHOT.jar";
+        String usage = "usage:\n" +
+                "\n" +
+                "Opening of accounts:\n" +
+                "POST to /account with body { AccountId : 'myAccountId'}\n" +
+                "\n" +
+                "Registration of URLs:\n" +
+                "POST to /register with body {url: 'http://stackoverflow.com/questions/1567929/website-safe-data-access-architecture-question?rq=1',redirectType : 301}\n" +
+                "\n" +
+                "Retrieval of statistics:\n" +
+                "GET to /statistic/{AccountId}\n" +
+                "\n" +
+                "Redirecting with a shorthand:\n" +
+                "GET to /{url}\n" +
+                "\n" +
+                "Help:\n" +
+                "GET to /help";
+        return ResponseEntity.ok(HelpResponse.builder().installation(installation).launching(launching).usage(usage).build());
     }
 
     private String getBaseUrl(HttpServletRequest request) {

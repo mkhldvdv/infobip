@@ -41,7 +41,7 @@ public class ShorthandControllerTest {
                 .log().all();
     }
 
-    // /username
+    // /account
     @Test
     public void usernameValid() throws Exception {
         String username = RandomStringUtils.randomAlphanumeric(6);
@@ -52,7 +52,7 @@ public class ShorthandControllerTest {
         given()
                 .body(body)
                 .when()
-                .post("/username")
+                .post("/account")
                 .then()
                 .log().all()
                 .statusCode(HttpStatus.OK.value())
@@ -73,7 +73,7 @@ public class ShorthandControllerTest {
                 .body(body)
                 .contentType(ContentType.XML)
                 .when()
-                .post("/username")
+                .post("/account")
                 .then()
                 .log().all()
                 .statusCode(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value());
@@ -89,7 +89,7 @@ public class ShorthandControllerTest {
         given()
                 .body(body)
                 .when()
-                .post("/username")
+                .post("/account")
                 .then()
                 .log().all()
                 .statusCode(HttpStatus.BAD_REQUEST.value());
@@ -105,14 +105,14 @@ public class ShorthandControllerTest {
         given()
                 .body(body)
                 .when()
-                .post("/username")
+                .post("/account")
                 .then()
                 .log().all();
 
         given()
                 .body(body)
                 .when()
-                .post("/username")
+                .post("/account")
                 .then()
                 .log().all()
                 .statusCode(HttpStatus.BAD_REQUEST.value());
@@ -296,7 +296,7 @@ public class ShorthandControllerTest {
         given()
                 .when()
                 .get("/help")
-                .then()
+                .then().log().all()
                 .statusCode(HttpStatus.OK.value());
     }
 
@@ -305,7 +305,7 @@ public class ShorthandControllerTest {
         RequestWrapper body = RequestWrapper.builder()
                 .username(username)
                 .build();
-        String password = given().body(body).post("/username").then().log().all().extract().path("password");
+        String password = given().body(body).post("/account").then().log().all().extract().path("password");
         return User.builder().username(username).password(password).build();
     }
 
