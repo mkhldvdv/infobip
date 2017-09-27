@@ -39,8 +39,8 @@ public class ShorthandService {
         return user;
     }
 
-    public Shorthand createShorthand(String username, Shorthand shorthand) {
-        log.info("Creating shorthand for {}", shorthand.getUrl());
+    public Shorthand createShorthand(String username, String url, int redirectType) {
+        log.info("Creating shorthand for {}", url);
 
         List<Shorthand> shorts = dao.getUserShorts(username);
         if (shorts == null) {
@@ -49,15 +49,19 @@ public class ShorthandService {
 
         // check if exists
         Optional<Shorthand> existingShort = shorts.stream()
-                .filter(s -> s.getUrl().equals(shorthand.getUrl()))
+                .filter(s -> s.getUrl().equals(url))
                 .findFirst();
         if (existingShort.isPresent()) {
-            log.info("Shorthand {} exists for {}", existingShort.get().getShortUrl(), shorthand.getUrl());
+            log.info("Shorthand {} exists for {}", existingShort.get().getShortUrl(), url);
             return existingShort.get();
         }
 
-        shorthand.setShortUrl(RandomStringUtils.randomAlphanumeric(6));
-        shorthand.setCount(0);
+        Shorthand shorthand = Shorthand.builder()
+                .url(url)
+                .shortUrl(RandomStringUtils.randomAlphanumeric(6))
+                .redirectType(redirectType)
+                .count(0)
+                .build();
         shorts.add(shorthand);
         dao.insertShorthand(username, shorts);
         log.info("Shorthand {} for {} created", shorthand.getShortUrl(), shorthand.getUrl());

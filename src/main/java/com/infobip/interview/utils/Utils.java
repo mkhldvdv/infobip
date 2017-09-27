@@ -28,7 +28,7 @@ public class Utils {
     }
 
     public static boolean isValidString(String string) {
-        String stringRegexp = "^[a-zA-Z][a-zA-Z0-9_-]{3,30}$";
+        String stringRegexp = "^[a-zA-Z0-9_-]{3,30}$";
         return Pattern.matches(stringRegexp, string);
     }
 

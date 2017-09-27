@@ -11,6 +11,7 @@ public class ShorthandApplicationTests {
 
 	@Test
 	public void contextLoads() {
+		System.out.println("This is a test");
 	}
 
 }

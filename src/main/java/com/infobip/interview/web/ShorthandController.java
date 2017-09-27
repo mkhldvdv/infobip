@@ -55,31 +55,30 @@ public class ShorthandController {
     @RequestMapping(value = "/register", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity register(HttpServletRequest request,
                                    @RequestBody RequestWrapper wrapper) {
-        Shorthand shorthand = Shorthand.builder().build();
         // check input
         if (!(wrapper.getUrl() != null && Utils.isValidUrl(wrapper.getUrl()))) {
             return ResponseEntity.badRequest().body(Utils.response(false, "incorrect url"));
         }
-        shorthand.setUrl(wrapper.getUrl());
+
         // redirectType
+        int redirectType = 0;
         if (wrapper.getRedirectType() != null) {
             try {
-                int redirectType = Integer.parseInt(wrapper.getRedirectType());
-                shorthand.setRedirectType(redirectType);
+                redirectType = Integer.parseInt(wrapper.getRedirectType());
             } catch (NumberFormatException e) {
-                return ResponseEntity.badRequest().body(Utils.response(false, "incorrect redirectType"));
+                // nothing to do here
             }
         } else {
-            shorthand.setRedirectType(HttpServletResponse.SC_MOVED_TEMPORARILY);
+            redirectType = HttpServletResponse.SC_MOVED_TEMPORARILY;
         }
-        if (!isValidRedirectType(shorthand.getRedirectType())) {
+        if (!isValidRedirectType(redirectType)) {
             return ResponseEntity.badRequest().body(Utils.response(false, "incorrect redirectType"));
         }
 
         log.info("POST request on register shorthand for {}", wrapper.getUrl());
         String username = request.getUserPrincipal().getName();
         log.info("get base url: {}", getBaseUrl(request));
-        String shortUrl = getBaseUrl(request) + SLASH + service.createShorthand(username, shorthand).getShortUrl();
+        String shortUrl = getBaseUrl(request) + SLASH + service.createShorthand(username, wrapper.getUrl(), redirectType).getShortUrl();
         return ResponseEntity.ok(Utils.response(shortUrl));
     }
 
