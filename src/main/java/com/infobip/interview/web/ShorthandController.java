@@ -42,7 +42,7 @@ public class ShorthandController {
     public ResponseEntity username(@RequestBody RequestWrapper request) {
         // check input
         if (!(request.getUsername() != null && Utils.isValidString(request.getUsername()))) {
-            return ResponseEntity.badRequest().body(Utils.response(false, "incorrect username"));
+            return ResponseEntity.badRequest().body(Utils.response(false, "incorrect AccountId"));
         }
 
         log.info("POST request on creating user for {}", request.getUsername());
@@ -90,7 +90,7 @@ public class ShorthandController {
         String principal = request.getUserPrincipal().getName();
         log.info("{} requested stats for {}", principal, username);
         if (!principal.equals(username)) {
-            return ResponseEntity.badRequest().body(Utils.response(false, "incorrect username"));
+            return ResponseEntity.badRequest().body(Utils.response(false, "incorrect AccountId"));
         }
 
         Map<String, Integer> response = service.getUserStats(username).stream()
